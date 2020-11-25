@@ -134,7 +134,7 @@ class AuthorizeEndpoint(object):
         try:
             if self.grant_type in ['authorization_code', 'hybrid']:
                 code = create_code(
-                    user=self.request.user,
+                    user=self.request.oidc_user,
                     client=self.client,
                     scope=self.params['scope'],
                     nonce=self.params['nonce'],
@@ -148,7 +148,7 @@ class AuthorizeEndpoint(object):
                 query_params['state'] = self.params['state'] if self.params['state'] else ''
             elif self.grant_type in ['implicit', 'hybrid']:
                 token = create_token(
-                    user=self.request.user,
+                    user=self.request.oidc_user,
                     client=self.client,
                     scope=self.params['scope'])
 
@@ -161,7 +161,7 @@ class AuthorizeEndpoint(object):
                 if self.is_authentication:
                     kwargs = {
                         'token': token,
-                        'user': self.request.user,
+                        'user': self.request.oidc_user,
                         'aud': self.client.client_id,
                         'nonce': self.params['nonce'],
                         'request': self.request,
@@ -238,7 +238,7 @@ class AuthorizeEndpoint(object):
             days=settings.get('OIDC_SKIP_CONSENT_EXPIRE'))
 
         uc, created = UserConsent.objects.get_or_create(
-            user=self.request.user,
+            user=self.request.oidc_user,
             client=self.client,
             defaults={
                 'expires_at': expires_at,
@@ -262,7 +262,7 @@ class AuthorizeEndpoint(object):
         """
         value = False
         try:
-            uc = UserConsent.objects.get(user=self.request.user, client=self.client)
+            uc = UserConsent.objects.get(user=self.request.oidc_user, client=self.client)
             if (set(self.params['scope']).issubset(uc.scope)) and not (uc.has_expired()):
                 value = True
         except UserConsent.DoesNotExist:

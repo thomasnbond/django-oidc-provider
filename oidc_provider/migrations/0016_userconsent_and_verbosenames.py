@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 import datetime
-from django.conf import settings
+from oidc_provider import settings
 from django.db import migrations, models
 import django.db.models.deletion
 from django.utils.timezone import utc
@@ -115,7 +115,7 @@ class Migration(migrations.Migration):
             model_name='code',
             name='user',
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User'),
+                on_delete=django.db.models.deletion.CASCADE, to=settings.get("OIDC_USER_MODEL"), verbose_name='User'),
         ),
         migrations.AlterField(
             model_name='rsakey',
@@ -157,7 +157,7 @@ class Migration(migrations.Migration):
             model_name='token',
             name='user',
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User'),
+                on_delete=django.db.models.deletion.CASCADE, to=settings.get("OIDC_USER_MODEL"), verbose_name='User'),
         ),
         migrations.AlterField(
             model_name='userconsent',
@@ -179,6 +179,6 @@ class Migration(migrations.Migration):
             model_name='userconsent',
             name='user',
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='User'),
+                on_delete=django.db.models.deletion.CASCADE, to=settings.get("OIDC_USER_MODEL"), verbose_name='User'),
         ),
     ]

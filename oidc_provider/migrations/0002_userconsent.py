@@ -2,13 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from django.conf import settings
+from oidc_provider import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        migrations.swappable_dependency(settings.get("OIDC_USER_MODEL")),
         ('oidc_provider', '0001_initial'),
     ]
 
@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('expires_at', models.DateTimeField()),
                 ('_scope', models.TextField(default=b'')),
                 ('client', models.ForeignKey(to='oidc_provider.Client', on_delete=models.CASCADE)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.get("OIDC_USER_MODEL"), on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,

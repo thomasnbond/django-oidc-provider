@@ -69,11 +69,10 @@ class AuthorizeView(View):
 
         try:
             authorize.validate_params()
-
-            if get_attr_or_callable(request.user, 'is_authenticated'):
+            if get_attr_or_callable(request.oidc_user, 'is_authenticated'):
                 # Check if there's a hook setted.
                 hook_resp = settings.get('OIDC_AFTER_USERLOGIN_HOOK', import_str=True)(
-                    request=request, user=request.user,
+                    request=request, user=request.oidc_user,
                     client=authorize.client)
                 if hook_resp:
                     return hook_resp
@@ -176,7 +175,7 @@ class AuthorizeView(View):
 
             if not request.POST.get('allow'):
                 signals.user_decline_consent.send(
-                    self.__class__, user=request.user,
+                    self.__class__, user=request.oidc_user,
                     client=authorize.client, scope=authorize.params['scope'])
 
                 raise AuthorizeError(authorize.params['redirect_uri'],
@@ -184,7 +183,7 @@ class AuthorizeView(View):
                                      authorize.grant_type)
 
             signals.user_accept_consent.send(
-                self.__class__, user=request.user, client=authorize.client,
+                self.__class__, user=request.oidc_user, client=authorize.client,
                 scope=authorize.params['scope'])
 
             # Save the user consent given to the client.

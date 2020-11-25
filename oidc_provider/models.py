@@ -7,7 +7,8 @@ import json
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
+
+from oidc_provider import settings
 
 
 CLIENT_TYPE_CHOICES = [
@@ -58,7 +59,7 @@ class Client(models.Model):
 
     name = models.CharField(max_length=100, default='', verbose_name=_(u'Name'))
     owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name=_(u'Owner'), blank=True,
+        settings.get("OIDC_USER_MODEL"), verbose_name=_(u'Owner'), blank=True,
         null=True, default=None, on_delete=models.SET_NULL, related_name='oidc_clients_set')
     client_type = models.CharField(
         max_length=30,
@@ -185,7 +186,7 @@ class BaseCodeTokenModel(models.Model):
 class Code(BaseCodeTokenModel):
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name=_(u'User'), on_delete=models.CASCADE)
+        settings.get("OIDC_USER_MODEL"), verbose_name=_(u'User'), on_delete=models.CASCADE)
     code = models.CharField(max_length=255, unique=True, verbose_name=_(u'Code'))
     nonce = models.CharField(max_length=255, blank=True, default='', verbose_name=_(u'Nonce'))
     is_authentication = models.BooleanField(default=False, verbose_name=_(u'Is Authentication?'))
@@ -204,7 +205,7 @@ class Code(BaseCodeTokenModel):
 class Token(BaseCodeTokenModel):
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, verbose_name=_(u'User'), on_delete=models.CASCADE)
+        settings.get("OIDC_USER_MODEL"), null=True, verbose_name=_(u'User'), on_delete=models.CASCADE)
     access_token = models.CharField(max_length=255, unique=True, verbose_name=_(u'Access Token'))
     refresh_token = models.CharField(max_length=255, unique=True, verbose_name=_(u'Refresh Token'))
     _id_token = models.TextField(verbose_name=_(u'ID Token'))
@@ -240,7 +241,7 @@ class Token(BaseCodeTokenModel):
 class UserConsent(BaseCodeTokenModel):
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name=_(u'User'), on_delete=models.CASCADE)
+        settings.get("OIDC_USER_MODEL"), verbose_name=_(u'User'), on_delete=models.CASCADE)
     date_given = models.DateTimeField(verbose_name=_(u'Date Given'))
 
     class Meta:

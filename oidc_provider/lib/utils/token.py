@@ -35,8 +35,7 @@ def create_id_token(token, user, aud, nonce='', at_hash='', request=None, scope=
     now = int(time.time())
     iat_time = now
     exp_time = int(now + expires_in)
-    user_auth_time = user.last_login or user.date_joined
-    auth_time = int(dateformat.format(user_auth_time, 'U'))
+    auth_time = now
 
     dic = {
         'iss': get_issuer(request=request),
