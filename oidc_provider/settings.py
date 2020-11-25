@@ -30,7 +30,7 @@ class DefaultSettings(object):
         """
         REQUIRED. Used to get the user model. By default Django's AUTH_USER_MODEL will be used.
         """
-        return settings.OIDC_USER_MODEL if hasattr(settings, "OIDC_USER_MODEL") else settings.AUTH_USER_MODEL
+        return settings.AUTH_USER_MODEL
 
     @property
     def OIDC_GET_USER_HOOK(self):

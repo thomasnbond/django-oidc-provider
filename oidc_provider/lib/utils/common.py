@@ -1,7 +1,7 @@
 from hashlib import sha224
 
 import django
-from django.contrib import auth
+
 from django.http import HttpResponse
 from django.utils.cache import patch_vary_headers
 
