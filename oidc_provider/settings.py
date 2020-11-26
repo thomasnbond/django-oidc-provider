@@ -26,6 +26,20 @@ class DefaultSettings(object):
         return None
 
     @property
+    def OIDC_USER_MODEL(self):
+        """
+        REQUIRED. Used to get the user model. By default Django's AUTH_USER_MODEL will be used.
+        """
+        return settings.AUTH_USER_MODEL
+
+    @property
+    def OIDC_GET_USER_HOOK(self):
+        """
+        OPTIONAL. Used to get user from a request.
+        """
+        return "django.contrib.auth.get_user"
+
+    @property
     def OIDC_AFTER_USERLOGIN_HOOK(self):
         """
         OPTIONAL.  Provide a way to plug into the process after

@@ -1,6 +1,7 @@
 from hashlib import sha224
 
 import django
+
 from django.http import HttpResponse
 from django.utils.cache import patch_vary_headers
 
@@ -67,7 +68,7 @@ def default_sub_generator(user):
     """
     Default function for setting OIDC_IDTOKEN_SUB_GENERATOR.
     """
-    return str(user.id)
+    return str(user.id) if hasattr(user, "id") else str(user.user_id)
 
 
 def default_after_userlogin_hook(request, user, client):

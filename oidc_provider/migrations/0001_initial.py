@@ -2,14 +2,15 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from django.conf import settings
+
+from oidc_provider import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0001_initial'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        migrations.swappable_dependency(settings.get("OIDC_USER_MODEL")),
     ]
 
     operations = [
@@ -61,7 +62,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserInfo',
             fields=[
-                ('user', models.OneToOneField(primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
+                ('user', models.OneToOneField(primary_key=True, serialize=False, to=settings.get("OIDC_USER_MODEL"), on_delete=models.CASCADE)),
                 ('given_name', models.CharField(max_length=255, null=True, blank=True)),
                 ('family_name', models.CharField(max_length=255, null=True, blank=True)),
                 ('middle_name', models.CharField(max_length=255, null=True, blank=True)),
@@ -91,13 +92,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='token',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
+            field=models.ForeignKey(to=settings.get("OIDC_USER_MODEL"), on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='code',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
+            field=models.ForeignKey(to=settings.get("OIDC_USER_MODEL"), on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

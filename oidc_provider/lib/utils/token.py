@@ -35,8 +35,6 @@ def create_id_token(token, user, aud, nonce='', at_hash='', request=None, scope=
     now = int(time.time())
     iat_time = now
     exp_time = int(now + expires_in)
-    user_auth_time = user.last_login or user.date_joined
-    auth_time = int(dateformat.format(user_auth_time, 'U'))
 
     dic = {
         'iss': get_issuer(request=request),
@@ -44,9 +42,11 @@ def create_id_token(token, user, aud, nonce='', at_hash='', request=None, scope=
         'aud': str(aud),
         'exp': exp_time,
         'iat': iat_time,
-        'auth_time': auth_time,
     }
-
+    user_auth_time = getattr(user, "last_login", 0) or getattr(user, "date_joined", 0)
+    auth_time = int(dateformat.format(user_auth_time, 'U')) if user_auth_time else None
+    if auth_time:
+        dic["auth_time"] = auth_time
     if nonce:
         dic['nonce'] = str(nonce)
 
