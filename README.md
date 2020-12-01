@@ -18,3 +18,7 @@ Support for Python 3 and 2. Also latest versions of django.
 [Read documentation for more info.](http://django-oidc-provider.readthedocs.org/)
 
 [Do you want to contribute? Please read this.](http://django-oidc-provider.readthedocs.io/en/latest/sections/contribute.html)
+
+## About the fork
+
+[Installation guide.](https://bond-financial.atlassian.net/wiki/spaces/PRM2020/pages/770637849/Domo+Integration)
