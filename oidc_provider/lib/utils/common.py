@@ -68,6 +68,10 @@ def default_sub_generator(user):
     """
     Default function for setting OIDC_IDTOKEN_SUB_GENERATOR.
     """
+    
+    # return str(user.id) if hasattr(user, "id") else str(user.user_id) # Original
+    if hasattr(user, "client"): 
+        return str(user.client.id) if hasattr(user.client, "id") else str(user.user_id)
     return str(user.id) if hasattr(user, "id") else str(user.user_id)
 
 
