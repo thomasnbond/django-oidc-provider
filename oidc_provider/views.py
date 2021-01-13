@@ -240,7 +240,7 @@ def userinfo(request, *args, **kwargs):
     token = kwargs['token']
 
     dic = {
-        'sub': 'abaa2147-4533-4ec7-a9f6-bd88a988ecd1',
+        'sub': token.id_token.get('sub'),
     }
 
     standard_claims = StandardScopeClaims(token)
@@ -250,7 +250,7 @@ def userinfo(request, *args, **kwargs):
         extra_claims = settings.get('OIDC_EXTRA_SCOPE_CLAIMS', import_str=True)(token)
         dic.update(extra_claims.create_response_dic())
 
-    success_response = JsonResponse(dic, status=200)
+    success_response = JsonResponse({}, status=200)
     set_headers(success_response)
 
     return success_response
