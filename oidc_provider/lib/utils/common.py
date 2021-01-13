@@ -70,10 +70,7 @@ def default_sub_generator(user):
     """
     
     # return str(user.id) if hasattr(user, "id") else str(user.user_id) # Original
-    if hasattr(user, "client"): 
-        return str(user.client.id) if hasattr(user.client, "id") else str(user.user_id)
-    return str(user.id) if hasattr(user, "id") else str(user.user_id)
-
+    return user.client.client_id
 
 def default_after_userlogin_hook(request, user, client):
     """
